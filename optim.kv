@@ -1,0 +1,2320 @@
+#: import plt matplotlib.pyplot
+
+<Label>:
+    font_size: 18
+
+<ConsScreen>:
+    BoxLayout:
+        Button:
+            text: 'Cons'
+            font_size: 14
+            size: (20, 20)
+
+<ParamScreen>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Parameters'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = 'path'
+            NextBtn:
+                on_press:
+                    root.manager.current = 'cons'
+                    root.manager.transition.direction = 'left'
+        BoxLayout:
+            size_hint: 1, 1
+            Button:
+                text: 'cao'
+
+<MpOptimizationScreen>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Optimization Parameters'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.switching_function()
+            NextBtn:
+                id: nextoptimization
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.next_switching_function()
+
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            padding: [20, 20]
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [10, 0]
+                Label:
+                    text: '[b]Basin-Hopping Algorithm[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'niter [ / ] - Number of basin-hopping \
+                            iterations in global optimization for \
+                            pre-determined number of roughing passes'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            '(m[sub]max[/sub] - m[sub]min[/sub] + 1) niter \
+                            [ / ] - Total number of basin-hopping iterations \
+                            in global optimization'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'T [ / ] - Temperature parameter used in \
+                            metropolis accept or reject criterion'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'stepsize [ / ] - Initial step size \
+                            used in random displacement of the coordinates'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'interval [ / ] - Number of steps before stepsize \
+                            is updated'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 0.3
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'niter  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: niter
+                            hint_text: '100'
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'T  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: T
+                            hint_text: '1 * 10^(-10)'
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'stepsize  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: stepsize
+                            hint_text: '0.1'
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'interval  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: interval
+                            hint_text: '25'
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [10, 0]
+                Label:
+                    text: '[b]Sequential Least Squares Programming[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'ftol [ / ] - Precision goal for the value of \
+                            objective function in the stopping criterion'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'maxiter [ / ] - Maximum possible number of \
+                            iterations for local minimization'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 0.7
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'ftol  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: ftol
+                            hint_text: '1 * 10^(-10)'
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'maxiter  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: maxiter
+                            hint_text: '100'
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                Button:
+                    text: 'Set Optimization Parameters'
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: None, None
+                    on_press: root.set_parameters()
+
+<MpForceScreen>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Force and Power'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.switching_function()
+            NextBtn:
+                id: nextforce
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.next_switching_function()
+
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            padding: [20, 20]
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [10, 0]
+                Label:
+                    text: '[b]Cutting Force[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_force_kienzle.png'
+                    allow_stretch: True
+                    size_hint: 0.8, 0.7
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'K[sub]c[/sub] ( N/mm[sup]2[/sup] ) - \
+                            Specific cutting force for 1mm[sup]2[/sup] chip \
+                            section'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'm[sub]c[/sub] [ / ] - Chip thickness factor'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            unichr(954) + '[sub]r[/sub] [ ' + unichr(176) + ' \
+                            ] - Tool side cutting angle'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'F[sub]max[/sub] [ N ] - Maximum allowable \
+                            cutting force'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 0.7
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'K[sub]c[/sub]  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: Kc
+                        Label:
+                            text: ' N/mm[sup]2[/sup] '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'm[sub]c[/sub]  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: mc
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                unichr(954) + '[sub]r[/sub]  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: kappa
+                        Label:
+                            text: ' ' + unichr(176)
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'F[sub]max[/sub]  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: Fmax
+                        Label:
+                            text: ' N '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [10, 0]
+                Label:
+                    text: '[b]Cutting Power[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_power.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'P[sub]s[/sub] [ kW ] - Machine power'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            unichr(951) + '[sub]s[/sub] [ / ] - Power \
+                            efficinecy'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                'P[sub]s[/sub]  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: Ps
+                        Label:
+                            text: ' kW '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text:
+                                unichr (951) + '[sub]s[/sub]  =  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'center'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: etas
+                            hint_text: '0.7 - 0.85'
+                        Label:
+                            text: '  '
+                            markup: True
+                            size: self.texture_size
+                            text_size: self.size
+                            halign: 'left'
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                Button:
+                    text: 'Set Parameters'
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: None, None
+                    on_press: root.set_parameters()
+
+<MpSurfRelScreen>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Relations and Surface'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.switching_function()
+            NextBtn:
+                id: nextsurf
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.next_switching_function()
+
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            padding: [20, 20]
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [40, 0]
+                Label:
+                    text: '[b]Parameter Relations[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Label:
+                    text:
+                        'Cutting speed relation'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_relation_speed.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'k[sub]1[/sub]  =  '
+                        markup: True
+                        size: self.texture_size
+                        text_size: self.size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: k1
+                    Label:
+                        text: '  '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Feed relation'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_relation_feed.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'k[sub]2[/sub]  =  '
+                        markup: True
+                        size: self.texture_size
+                        text_size: self.size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: k2
+                    Label:
+                        text: '  '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Depth of cut relation'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_relation_depth.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'k[sub]3[/sub]  =  '
+                        markup: True
+                        size: self.texture_size
+                        text_size: self.size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: k3
+                    Label:
+                        text: '  '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [20, 0]
+                Label:
+                    text: '[b]Surface Finish[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Label:
+                    text:
+                        'Finishing feed constraint'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_surface_finish.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'r[sub]' + unichr(949) + '[/sub] [mm] - \
+                            Cutting tool nose radius'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'Ra [mm] - Roughness average'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 0.8
+                    Label:
+                        text:
+                            'r[sub]' + unichr(949) + '[/sub]  ='
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: reps
+                    Label:
+                        text: ' mm '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    padding: [0, 0, 0, 30]
+                    Label:
+                        text:
+                            'Ra  ='
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: Ra
+                    Label:
+                        text: ' mm '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text: '[b]Tool Entry and Exit[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Label:
+                    text:
+                        'Tool entry legth'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 0.8
+                    Label:
+                        text:
+                            'L[sub]1[/sub]  ='
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: l1
+                    Label:
+                        text: ' mm '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Tool exit legth'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 0.8
+                    Label:
+                        text:
+                            'L[sub]2[/sub]  ='
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: l2
+                    Label:
+                        text: ' mm '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Button:
+                    text: 'Set Parameters'
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: None, None
+                    on_press: root.set_parameters()
+
+<MpRunScreen>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Run Optimization'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.switching_function()
+            NextBtn:
+                id: nextrun
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.next_switching_function()
+
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            padding: [30, 30]
+            spacing: [10, 0]
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                TextInput:
+                    size_hint: 1, 1
+                    multiline: True
+                    readonly: True
+                    text: root.output
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 0.5, 1
+                spacing: 10
+                TextInput:
+                    size_hint: 1, 1
+                    multiline: True
+                    readonly: True
+                    text: root.result
+                Button:
+                    text: root.button_text
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: None, None
+                    on_press: root.button_text = 'Please wait ...'
+                    on_release: root.run_optimization()
+
+<MpBoundsScreen>:
+    GridLayout:
+        rows: 3
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.142
+            Title:
+                text: 'Bounds'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.switching_function()
+            NextBtn:
+                id: nextbounds
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.next_switching_function()
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            padding: [20, 20]
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [40, 0]
+                Label:
+                    text: '[b]Rough Machining[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Label:
+                    text:
+                        'Cutting speed bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: vrmin
+                    Label:
+                        text:
+                            unichr(8804) + '   v[sub]R[/sub]   ' + unichr(8804)
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: vrmax
+                    Label:
+                        text: ' m/min '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Feed bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: frmin
+                    Label:
+                        text:
+                            unichr(8804) + '   f[sub]R[/sub]   ' + unichr(8804)
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: frmax
+                    Label:
+                        text: ' mm/rev '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Depth of cut bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: armin
+                    Label:
+                        text:
+                            unichr(8804) + '   a[sub]R[/sub]   ' + unichr(8804)
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: armax
+                    Label:
+                        text: ' mm '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Depth of cut to feed ratio bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: epsrmin
+                        hint_text: '4'
+                    Image:
+                        source: 'images/mp_a_R_f_R.png'
+                        allow_stretch: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    FloatInput:
+                        id: epsrmax
+                        hint_text: '5 - 16'
+                    Label:
+                        text: '  '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Number of passes bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        input_filter: 'int'
+                        id: mmin
+                    Label:
+                        text:
+                            unichr(8804) + '   m   ' + unichr(8804)
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        input_filter: 'int'
+                        id: mmax
+                    Label:
+                        text: '  '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                spacing: 10
+                padding: [20, 0]
+                Label:
+                    text: '[b]Finish Machining[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Label:
+                    text:
+                        'Cutting speed bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: vfmin
+                    Label:
+                        text:
+                            unichr(8804) + '   v[sub]F[/sub]   ' + unichr(8804)
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: vfmax
+                    Label:
+                        text: ' m/min '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Feed bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: ffmin
+                    Label:
+                        text:
+                            unichr(8804) + '   f[sub]F[/sub]   ' + unichr(8804)
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: ffmax
+                    Label:
+                        text: ' mm/rev '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Depth of cut bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: afmin
+                    Label:
+                        text:
+                            unichr(8804) + '   a[sub]F[/sub]   ' + unichr(8804)
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: afmax
+                    Label:
+                        text: ' mm '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text:
+                        'Depth of cut to feed ratio bounds'
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    FloatInput:
+                        id: epsfmin
+                        hint_text: '4'
+                    Image:
+                        source: 'images/mp_a_F_f_F.png'
+                        allow_stretch: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    FloatInput:
+                        id: epsfmax
+                        hint_text: '5 - 16'
+                    Label:
+                        text: '  '
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 0.2
+            spacing: 10
+            padding: [90, 0, 90, 20]
+            Label:
+                text:
+                    'Combined tool life bounds'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 1
+                pos_hint: {'center_x': 0.5}
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 1
+                FloatInput:
+                    id: tlmin
+                Label:
+                    text:
+                        unichr(8804) + '   T[sub]L[/sub]   ' + unichr(8804)
+                    markup: True
+                    size: self.texture_size
+                    size_hint_y: None
+                    pos_hint: {'center_y': 0.5}
+                FloatInput:
+                    id: tlmax
+                Label:
+                    text: ' min '
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    size_hint_y: None
+                    pos_hint: {'center_y': 0.5}
+                Button:
+                    text: 'Set Bounds'
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: 1, None
+                    on_press: root.SetBounds()
+
+<MpToolLife>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Tool Life'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.switching_function()
+            NextBtn:
+                id: nexttool
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.next_switching_function()
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            padding: [20, 0]
+
+            BoxLayout:
+                orientation: 'vertical'
+                width: 300
+                size_hint: None, 1
+                Label:
+                    text: '[b]Taylor\'s tool life equation[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_tool_equation.png'
+                    allow_stretch: True
+                    size_hint: 1, 0.6
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_taylor_constant.png'
+                    allow_stretch: True
+                    size_hint: 1, 0.2
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    padding: [0, 10]
+                    spacing: 5
+                    Label:
+                        text:
+                            'a[sub]p[/sub] [mm] - Depth of cut'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'C[sub]T[/sub], C [ / ] - Taylor\'s constant'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text: 'C = '
+                            markup: True
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: c
+                        Label:
+                            text: ' '
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    Label:
+                        text:
+                            'k[sub]v[/sub] [ / ] - Cutting speed exponent'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text: 'k[sub]v[/sub] = '
+                            markup: True
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: kv
+                        Label:
+                            text: ' '
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    Label:
+                        text:
+                            'k[sub]f[/sub] [ / ] - Feed exponent'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text: 'k[sub]f[/sub] = '
+                            markup: True
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: kf
+                        Label:
+                            text: ' '
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                    Label:
+                        text:
+                            'k[sub]a[/sub] [ / ] - Depth of cut exponent'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: 1, 1
+                        Label:
+                            text: 'k[sub]a[/sub] = '
+                            markup: True
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                        FloatInput:
+                            id: ka
+                        Label:
+                            text: ' '
+                            size: self.texture_size
+                            size_hint_y: None
+                            pos_hint: {'center_y': 0.5}
+                Button:
+                    text: 'Set Constants'
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: 0.5, None
+                    on_press: root.SetConstants()
+                    on_release: root.NextCheck()
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+                padding: [50, 20]
+                spacing: 20
+                Label:
+                    text: '[b]Tool life for roughing and finishing[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_tool_life_combined.png'
+                    allow_stretch: True
+                    size_hint: 1, 0.4
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_tool_life_combined2.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_tool_life_rough.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_tool_life_finish.png'
+                    allow_stretch: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            'T[sub]L[/sub] [min] - Combined tool life'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'T[sub]R[/sub] [min] - Tool life for rough \
+                            machining'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'T[sub]F[/sub] [min] - Tool life for finish \
+                            machining'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'w [ / ] - Weight factor'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+
+<MpTimeInput>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Time Input'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.switching_function()
+            NextBtn:
+                id: nexttime
+                on_press:
+                    root.manager.transition.direction = 'left'
+                    root.next_switching_function()
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            padding: [20, 0]
+
+            BoxLayout:
+                orientation: 'vertical'
+                width: 300
+                size_hint: None, 1
+                Label:
+                    text: '[b]Loading and unloading time[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 't[sub]L[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5,}
+                    FloatInput:
+                        id: tl
+                    Label:
+                        text: 'min '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text: '[b]Tool setting time[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    Label:
+                        text:
+                            't[sub]ts[/sub] = t[sub]s[/sub] (m + 1)'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            't[sub]s[/sub] [min] - Setting time for each pass'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'm [ / ] - Number of roughing passes'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 't[sub]s[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: ts
+                    Label:
+                        text: 'min '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Label:
+                    text: '[b]Tool changing time[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 't[sub]c[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: tc
+                    Label:
+                        text: 'min '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Button:
+                    text: 'Set Times'
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: 0.5, None
+                    on_press: root.SetTime()
+                    on_release: root.NextCheck()
+
+            BoxLayout:
+                size_hint: 1, 1
+                orientation: 'vertical'
+                padding:[20, 0]
+                Label:
+                    text: '[b]Total cutting time for rough machining[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.7
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_rough_time.png'
+                    allow_stretch: True
+                    size_hint: 1, 0.7
+                    pos_hint: {'center_x': 0.5}
+                Label:
+                    text: '[b]Total cutting time for finish machining[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 0.7
+                    pos_hint: {'center_x': 0.5}
+                Image:
+                    source: 'images/mp_finish_time.png'
+                    allow_stretch: True
+                    size_hint: 1, 0.7
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 1
+                    padding: [50, 10, 20, 10]
+                    Label:
+                        text:
+                            'L [mm] - Cutting length'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'D [mm] - Diameter'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'v [m/min] - Cutting speed'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'f [mm/rev] - Feed'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+                    Label:
+                        text:
+                            'a [mm] - Depth of cut'
+                        size: self.texture_size
+                        text_size: self.size
+                        halign: 'left'
+                        markup: True
+                        size_hint: 1, 1
+                        pos_hint: {'center_x': 0.5}
+
+<MpTimeStart>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Maximum Productivity'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = 'optim'
+            NextBtn:
+                disabled: False
+                on_press:
+                    root.manager.current = 'mptime_input'
+                    root.manager.transition.direction = 'left'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: [20, 20]
+            Image:
+                source: 'images/mp_prod_time.png'
+                allow_stretch: True
+                size_hint: 1, 1
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]p[/sub] [min] - Total production time per component'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]L[/sub] [min] - Part loading and unloading time'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]ts[/sub] [min] - Tool setting time'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]F[/sub] [min] - Total cutting time for finish \
+                    machining'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]R[/sub] [min] - Total cutting time for rough \
+                    machining'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]c[/sub] [min] - Tool changing time'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    'T[sub]L[/sub] [min] - Tool life'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+
+<MpCostStart>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Cost Efficiency'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = 'optim'
+            NextBtn:
+                id: nextcost
+                on_press:
+                    root.manager.current = 'mptime_input'
+                    root.manager.transition.direction = 'left'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 1
+            padding: [20, 20]
+            Image:
+                source: 'images/mp_prod_cost.png'
+                allow_stretch: True
+                size_hint: 1, 1
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    'C[sub]p[/sub] [$/piece] - Unit production cost'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    'k[sub]o[/sub] [$/min] - Operating cost (labour + overhead)'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 0.4, 0.6
+                Label:
+                    text:
+                        'k[sub]o[/sub]  =  '
+                    markup: True
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'center'
+                    size_hint_y: None
+                    pos_hint: {'center_y': 0.5}
+                FloatInput:
+                    id: ko
+                Label:
+                    text: ' $/min '
+                    markup: True
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    size_hint_y: None
+                    pos_hint: {'center_y': 0.5}
+            Label:
+                text:
+                    'k[sub]t[/sub] [$/edge] - Cutting edge cost'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 0.4, 0.6
+                Label:
+                    text:
+                        'k[sub]t[/sub]  =  '
+                    markup: True
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'center'
+                    size_hint_y: None
+                    pos_hint: {'center_y': 0.5}
+                FloatInput:
+                    id: kt
+                Label:
+                    text: ' $/edge '
+                    markup: True
+                    size: self.texture_size
+                    text_size: self.size
+                    halign: 'left'
+                    size_hint_y: None
+                    pos_hint: {'center_y': 0.5}
+            Label:
+                text:
+                    't[sub]L[/sub] [min] - Part loading and unloading time'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]ts[/sub] [min] - Tool setting time'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]F[/sub] [min] - Total cutting time for finish \
+                    machining'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]R[/sub] [min] - Total cutting time for rough \
+                    machining'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    't[sub]c[/sub] [min] - Tool changing time'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Label:
+                text:
+                    'T[sub]L[/sub] [min] - Tool life'
+                size: self.texture_size
+                text_size: self.size
+                halign: 'left'
+                markup: True
+                size_hint: 1, 0.6
+                pos_hint: {'center_x': 0.5}
+            Button:
+                text: 'Set Operating and Tool Cost'
+                size: self.texture_size
+                padding: [6, 6]
+                pos_hint: {'right': 0.9}
+                size_hint: None, None
+                on_press: root.set_cost()
+
+<OptimScreen>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Optimization Type'
+            PrevBtn:
+                on_press:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = 'path'
+            NextBtn:
+                id: nextoptim
+                on_press:
+                    root.manager.transition.direction = 'left'
+        Accordion:
+            orientation: 'vertical'
+            AccordionItem:
+                title: 'Multipass Straight Turning Process'
+                collapse: False
+                BoxLayout:
+                    size_hint: 1, 1
+                    orientation: 'vertical'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        CheckBox:
+                            group: 'optim_typ'
+                            size_hint: 0.2, 1
+                            on_press: root.on_radio_active()
+                            id: radiotime
+                        Label:
+                            text:
+                                '[b]Minimum production time optimization[/b]'
+                            size_hint: 1, 1
+                            text_size: self.size
+                            font_size: 20
+                            markup: True
+                            halign: 'left'
+                            valign: 'middle'
+                        Label:
+                            text:
+                                'Use when deadlines have to be met, \
+                                machines are heavily occupied or \
+                                bottlenecks are detected. So-called \
+                                maximum productivity criteria.'
+                            text_size: self.size
+                            halign: 'center'
+                            valign: 'middle'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        CheckBox:
+                            group: 'optim_typ'
+                            size_hint: 0.2, 1
+                            on_press: root.on_radio_active()
+                            id: radiocost
+                        Label:
+                            text:
+                                '[b]Minimum machining cost optimization[/b]'
+                            size_hint: 1, 1
+                            text_size: self.size
+                            font_size: 20
+                            markup: True
+                            halign: 'left'
+                            valign: 'middle'
+                        Label:
+                            text:
+                                'Use when enough machining capacity is \
+                                available. So-called cost efficiency \
+                                criteria.'
+                            text_size: self.size
+                            halign: 'center'
+                            valign: 'middle'
+            AccordionItem:
+                title: 'Continuous Form Turning Process'
+                collapse: True
+                Label:
+                    text: 'Not yet implemented'
+                    font_size: 20
+
+<PathScreen>:
+    GridLayout:
+        rows: 2
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.12
+            Title:
+                text: 'Stock and Contour'
+            NextBtn:
+                id: nextpath
+                on_press:
+                    root.manager.current = 'optim'
+                    root.manager.transition.direction = 'left'
+        GridLayout:
+            cols: 2
+            size_hint: 1, 1
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint: None, 1
+                width: 200
+                Label:
+                    text: '[b]Stock[/b]'
+                    size: self.texture_size
+                    markup: True
+                    size_hint: 1, 1
+                    pos_hint: {'center_x': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'D[sub]0[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: d0
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'L[sub]0[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: l0
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                Button:
+                    text: 'Set Stock'
+                    size: self.texture_size
+                    padding: [6, 6]
+                    pos_hint: {'right': 1}
+                    size_hint: 0.5, None
+                    on_press: root.StockCall() 
+                    on_release: cntimg.reload()
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: '[b]Define Contour[/b]'
+                        size: self.texture_size
+                        markup: True
+                        size_hint: 1, None
+                        pos_hint: {'center_y': 0.4}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'Type: '
+                        size: self.texture_size
+                        size_hint: 1, None
+                        pos_hint: {'center_y': 0.5}
+                    Spinner:
+                        id: typ
+                        text: 'Choose'
+                        values: ['Straight', 'Face', 'Taper', 'Circular']
+                        on_text: root.SpinnerText(self.text)
+                        size_hint: 1, None
+                        size: self.texture_size
+                        padding: [6, 6]
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'X[sub]1[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: x1
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'X[sub]2[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: x2
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'Z[sub]1[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: z1
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'Z[sub]2[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: z2
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'X[sub]c[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: xc
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'Z[sub]c[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: zc
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Label:
+                        text: 'r[sub]a[/sub] = '
+                        markup: True
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                    FloatInput:
+                        id: ra
+                    Label:
+                        text: 'mm '
+                        size: self.texture_size
+                        size_hint_y: None
+                        pos_hint: {'center_y': 0.5}
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, 1
+                    Button:
+                        text: 'Reset'
+                        size: self.texture_size
+                        padding: [6, 6]
+                        size_hint: 0.5, None
+                        on_press:
+                            root.ResetContour()
+                            nextpath.disabled = True
+                        on_release: cntimg.reload()
+                    Button:
+                        text: 'Add'
+                        size: self.texture_size
+                        padding: [6, 6]
+                        size_hint: 0.5, None
+                        on_press: root.AddContour()
+                        on_release:
+                            root.NextCheck()
+                            cntimg.reload()
+            Image:
+                id: cntimg
+                source: 'contour.jpg'
+                allow_stretch: True
+                size_hint: 1, 1
+
+
+<Title@Label>:
+    font_size: 45
+    size: self.texture_size
+    padding: [8, 8]
+    size_hint: 1, None
+
+<PrevBtn@Button>:
+    text: 'Previous'
+    font_size: 14
+    size: self.texture_size
+    padding: [8, 8]
+    size_hint: 0.2, None
+
+<NextBtn@Button>:
+    disabled: True
+    text: 'Next'
+    font_size: 14
+    size: self.texture_size
+    padding: [8, 8]
+    size_hint: 0.2, None
+
+<FloatInput@TextInput>:
+    input_filter: 'float'
+    write_tab: False
+    multiline: False
+    size_hint_y: None
+    height: 30
+    pos_hint: {'center_y': 0.5}
+
